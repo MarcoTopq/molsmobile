@@ -55,7 +55,7 @@ class RInputPasswordState extends State<RInputPassword> {
               : Container(),
           Container(
             decoration: ShapeDecoration(
-                color: Colors.grey,
+                color: Colors.grey.withOpacity(0.3),
                 // color: Colors.blue[900],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(

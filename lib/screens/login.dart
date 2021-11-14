@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text('Login'),
           centerTitle: true,
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.yellow,
         ),
         body: LoadingOverlay(
             isLoading: isLoading,
@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: AButtonPrimary(
                   label: 'Login',
-                  color: Colors.indigo[900],
+                  color: Colors.orange,
                   onTap: () {
                     _login();
                     // _mySelection == 'Dosen'

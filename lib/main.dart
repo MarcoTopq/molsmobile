@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:molsmobile/api/api2.dart';
 import 'package:molsmobile/controller/controllerHome.dart';
+import 'package:molsmobile/controller/controllerKelas.dart';
 import 'package:molsmobile/controller/controllerMahasiswa.dart';
 import 'package:molsmobile/screens/dosen/home_dosen.dart';
 import 'package:molsmobile/screens/dosen/list_kelas_dosen.dart';
@@ -25,13 +26,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(ControllerMahasiswa());
     Get.put(ControllerHome());
+    Get.put(ControllerKelas());
     return MaterialApp(
       title: 'Test Demo',
       theme: ThemeData(
         primarySwatch: Colors.yellow,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: nim == null ? LoginPage() : TabHome(),
+      home: nim != null ? LoginPage() : TabHome(),
     );
   }
 }

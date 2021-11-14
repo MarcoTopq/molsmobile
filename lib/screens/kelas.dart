@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:molsmobile/controller/controllerKelas.dart';
 import 'package:molsmobile/screens/home.dart';
 import 'package:molsmobile/screens/profile.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+
 class ListKelas extends StatefulWidget {
   @override
   _ListKelasState createState() => _ListKelasState();
 }
 
 class _ListKelasState extends State<ListKelas> {
+  final ControllerKelas controllerKelas = Get.find();
+
   double fabHeight = 0;
   @override
   void initState() {
+    if(controllerKelas.listKelas.isEmpty)
+    controllerKelas.getKelasAll();
     super.initState();
 
     fabHeight = 600;
@@ -18,132 +25,43 @@ class _ListKelasState extends State<ListKelas> {
 
   @override
   Widget build(BuildContext context) {
-    return SlidingUpPanel(
-        maxHeight: 600,
-        minHeight: fabHeight,
-        parallaxOffset: .5,
-        panelBuilder: (sc) => Center(
-                child: Container(
-              // margin: EdgeInsets.only(top: 80),
-              child: Column(
-                children: [
-                  Divider(
-                    thickness: 5,
-                    indent: 110,
-                    endIndent: 110,
-                    color: Colors.orange[200],
-                  ),
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  Expanded(
-                      child: ListView(children: [
-                    Container(
-                      child: Stack(
-                        children: [
-                          _kelas('Pengembangan dan Pemrograman web',
-                              'assets/web.jpg'),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Stack(
-                        children: [
-                          _kelas('Algoritma dan Pemrograman Dasar',
-                              'assets/algoritma.jpg'),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Stack(
-                        children: [
-                          _kelas('Basis Data', 'assets/basdat.jpg'),
-                        ],
-                      ),
-                    ),
-                    Text(''),
-                    SizedBox(
-                      height: 130.0,
-                    ),
-                  ])),
-                ],
-              ),
-            )),
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-        onPanelSlide: (double pos) => setState(() {
-              fabHeight = 320;
-            }),
-        body: Text(''));
+    return Center(
+        child: Container(
+      color: Colors.white,
+
+      // margin: EdgeInsets.only(top: 80),
+      child: Column(
+        children: [
+          Divider(
+            thickness: 5,
+            indent: 110,
+            endIndent: 110,
+            color: Colors.orange[200],
+          ),
+          SizedBox(
+            height: 40.0,
+          ),
+          Expanded(
+              child: ListView(children: [
+            listPost(context),
+            // 
+          ])),
+        ],
+      ),
+    ));
   }
 
-  Widget _appbar() {
-    return Container(
-        // height: 200,
-        decoration: BoxDecoration(
-            // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20),),
-            color: Colors.orange[200],
-            border: Border.all(
-              width: 2,
-              color: Colors.grey.withOpacity(0.5),
-            )),
-        padding: EdgeInsets.only(top: 20, bottom: 10, left: 10, right: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Profile()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.person),
-                        Text('Profil'),
-                      ],
-                    )),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.home),
-                        Text('Beranda'),
-                      ],
-                    )),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ListKelas()));
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.meeting_room),
-                        Text('Kelas'),
-                      ],
-                    )),
-              ],
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 200),
-                child: SizedBox(
-                  height: 100,
-                  child: Image.asset('assets/web.jpg'),
-                ))
-          ],
-        ));
+  Widget listPost(BuildContext context) {
+    return Obx(() => Column(
+        children: controllerKelas.listKelas
+            .map((e) => _kelas(
+                e.name, 'assets/algoritma.jpg', e.type, e.kode, e.year, e.description))
+            .toList()));
   }
+
 }
 
-Widget _kelas(title, image) {
+Widget _kelas(title, image, type, kode, year, desc) {
   return Stack(
     children: [
       Container(
@@ -183,7 +101,7 @@ Widget _kelas(title, image) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('Ganjil',
+                        Text(type,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
@@ -191,7 +109,7 @@ Widget _kelas(title, image) {
                         // SizedBox(
                         //   width: 70,
                         // ),
-                        Text('2021',
+                        Text(year,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
@@ -205,7 +123,7 @@ Widget _kelas(title, image) {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text('PW',
+                        Text(kode,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
@@ -213,7 +131,7 @@ Widget _kelas(title, image) {
                         // SizedBox(
                         //   width: 70,
                         // ),
-                        Text('6 sks',
+                        Text(desc,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.normal,
@@ -235,7 +153,7 @@ Widget _kelas(title, image) {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Icon(Icons.meeting_room),
-                        Text('Gabung'),
+                        Text('Kelas'),
                       ],
                     )),
               ),

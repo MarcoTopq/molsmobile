@@ -113,9 +113,9 @@ class _DetailPostState extends State<DetailPost> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _text("Pak Daus", Colors.black, 15.0,
-                                    FontWeight.normal),
-                                _text(widget.time, Colors.black, 15.0,
+                                // _text("Pak Daus", Colors.black, 15.0,
+                                //     FontWeight.normal),
+                                _text(widget.time! + " menit", Colors.black, 15.0,
                                     FontWeight.normal),
                               ],
                             ),

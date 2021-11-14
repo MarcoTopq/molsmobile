@@ -4,7 +4,7 @@ import 'package:molsmobile/api/api2.dart';
 
 class Api1 {
   // String url = "http://45.13.132.218:3000";
-  String url = "http://192.168.1.7:3000";
+  String url = "http://192.168.1.3:3000";
   String idDefault = "1515015221";
 
   Future<dynamic> login({
@@ -220,7 +220,7 @@ class Api1 {
     print('headers = ' + headers.toString());
     print('url = $url/group');
 
-    http.Response r = await http.post(Uri.parse('$url/group'), headers: {
+    http.Response r = await http.get(Uri.parse('$url/group'), headers: {
       'content-Type': 'application/json',
     });
     print("status codenya " + r.statusCode.toString());
@@ -307,6 +307,24 @@ class Api1 {
     print(data);
 
     // print("cek response : " + r.toString());
+    return data;
+  }
+
+  Future<dynamic> getkelas() async {
+    Map<String, String> headers = {
+      'content-Type': 'application/json',
+    };
+    print('headers = ' + headers.toString());
+    print('url = $url/groups');
+
+    http.Response r = await http.post(Uri.parse('$url/groups'), headers: {
+      'content-Type': 'application/json',
+    });
+    print("status codenya " + r.statusCode.toString());
+
+    print(r.body);
+    var data = json.decode(r.body);
+    print(data);
     return data;
   }
 }

@@ -22,103 +22,89 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
 
-    fabHeight = 800;
+    fabHeight = 700;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SlidingUpPanel(
-        maxHeight: 800,
-        // minHeight: fabHeight,
-        parallaxOffset: .5,
-        panelBuilder: (sc) => Center(
-                child: Container(
-              // margin: EdgeInsets.only(top: 80),
-              child: Column(
-                children: [
-                  Divider(
-                    thickness: 5,
-                    indent: 110,
-                    endIndent: 110,
-                    color: Colors.orange[200],
+    return Center(
+        child: Container(
+          color: Colors.white,
+      // margin: EdgeInsets.only(top: 80),
+      child: Column(
+        children: [
+          Divider(
+            thickness: 5,
+            indent: 110,
+            endIndent: 110,
+            color: Colors.orange[200],
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Expanded(
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ListView(children: [
+                  _profile(),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //         primary: Colors.indigo[900]),
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => ListNilai()));
+                      //     },
+                      //     child: Text('Lihat Nilai')),
+                      // SizedBox(
+                      //   width: 20,
+                      // ),
+                      // ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //         primary: Colors.yellow[900]),
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => EditProfilePage()));
+                      //     },
+                      //     child: Text('Edit Profil')),
+                      // SizedBox(
+                      //   width: 20,
+                      // ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red[900]),
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          },
+                          child: Text('Logout')),
+                    ],
                   ),
+                  Obx(() => _info('Nim', controllerMahasiswa.nim.value)),
+                  Obx(() => _info('Nama', controllerMahasiswa.name.value)),
+                  Obx(() => _info('Telepon', controllerMahasiswa.phone.value)),
+                  // _info('Alamat', controllerMahasiswa.),
+                  Obx(() => _info('Email', controllerMahasiswa.email.value)),
+                  Obx(() => _info(
+                      'Angkatan', controllerMahasiswa.academicYear.value)),
+                  Text(''),
                   SizedBox(
-                    height: 10.0,
+                    height: 30.0,
                   ),
-                  Expanded(
-                    child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: ListView(children: [
-                          _profile(),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.indigo[900]),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ListNilai()));
-                                  },
-                                  child: Text('Lihat Nilai')),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.yellow[900]),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditProfilePage()));
-                                  },
-                                  child: Text('Edit Profil')),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      primary: Colors.red[900]),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginPage()));
-                                  },
-                                  child: Text('Logout')),
-                            ],
-                          ),
-                          Obx(() =>
-                              _info('Nim', controllerMahasiswa.nim.value)),
-                          Obx(() =>
-                              _info('Nama', controllerMahasiswa.name.value)),
-                          Obx(() => _info(
-                              'Telepon', controllerMahasiswa.phone.value)),
-                          // _info('Alamat', controllerMahasiswa.),
-                          Obx(() =>
-                              _info('Email', controllerMahasiswa.email.value)),
-                          Obx(() => _info('Angkatan',
-                              controllerMahasiswa.academicYear.value)),
-                          Text(''),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                        ])),
-                  ),
-                ],
-              ),
-            )),
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-        onPanelSlide: (double pos) => setState(() {
-              fabHeight = 320;
-            }),
-        body: Text(''));
+                ])),
+          ),
+        ],
+      ),
+    ));
   }
 
   Widget _appbar() {

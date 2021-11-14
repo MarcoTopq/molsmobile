@@ -53,59 +53,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // _appbar(),
-        SlidingUpPanel(
-      maxHeight: 500,
-      minHeight: 120,
-      parallaxOffset: .5,
-      panelBuilder: (sc) => _panel(sc),
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-      onPanelSlide: (double pos) => setState(() {}),
-      body: SlidingUpPanel(
-        maxHeight: 800,
-        minHeight: _fabHeight,
-        parallaxEnabled: true,
-        parallaxOffset: .5,
-        // panelBuilder: (sc) => _panel(sc),
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(18.0), topRight: Radius.circular(18.0)),
-        onPanelSlide: (double pos) => setState(() {
-          _fabHeight = 800;
-          // _fabHeight =
-          //     pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
-        }),
-        panelBuilder: (sc) => Center(
-            child: Container(
-          // margin: EdgeInsets.only(top: 80),
-          child: Column(
-            children: [
-              Divider(
-                thickness: 5,
-                indent: 110,
-                endIndent: 110,
-                color: Colors.orange[200],
-              ),
-              SizedBox(
-                height: 40.0,
-              ),
-              Expanded(
-                  child: ListView(
-                children: [listPost(context)],
-              )),
-            ],
+    return Center(
+        child: Container(
+      color: Colors.white,
+
+      // margin: EdgeInsets.only(top: 80),
+      child: Column(
+        children: [
+          Divider(
+            thickness: 5,
+            indent: 110,
+            endIndent: 110,
+            color: Colors.orange[200],
           ),
-        )),
+          SizedBox(
+            height: 40.0,
+          ),
+          Expanded(
+              child: ListView(
+            children: [listPost(context)],
+          )),
+        ],
       ),
-    );
+    ));
   }
 
   Widget listPost(BuildContext context) {
     return Obx(() => Column(
         children: controllerHome.listPost
             .map((e) => _post(
-                e.title, e.dateLimit, e.text, 'assets/basdat.jpg', e.idSoal))
+                e.title, e.minutes, e.text, 'assets/basdat.jpg', e.idSoal))
             .toList()));
   }
 
@@ -180,27 +157,28 @@ class _HomePageState extends State<HomePage> {
 
   Widget _post(title, time, content, image, id) {
     return Container(
-        padding: EdgeInsets.all(20),
-        margin: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-            border: Border.all(
-              width: 2,
-              color: Colors.grey.withOpacity(0.5),
-            )),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: AssetImage(image),
-              ),
-              SizedBox(
-                width: 30,
-              ),
-              Column(
+      padding: EdgeInsets.all(20),
+      margin: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(
+            width: 2,
+            color: Colors.grey.withOpacity(0.5),
+          )),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              radius: 20,
+              backgroundImage: AssetImage(image),
+            ),
+            SizedBox(
+              width: 30,
+            ),
+            Expanded(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -211,42 +189,44 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500,
                         fontSize: 15),
                   ),
-                  Text(time,
+                  Text("$time menit",
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.normal,
                           fontSize: 12)),
                 ],
               ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Text(content,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 15)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.yellow),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailPost(
-                                  title: title,
-                                  time: time,
-                                  content: content,
-                                  image: image,
-                                  id: id,
-                                )));
-                  },
-                  child: Text('Detail')),
-            ],
-          ),
-        ]));
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        Text(content,
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+                fontSize: 15)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailPost(
+                                title: title,
+                                time: time,
+                                content: content,
+                                image: image,
+                                id: id,
+                              )));
+                },
+                child: Text('Detail')),
+          ],
+        ),
+      ]),
+    );
   }
 
   Widget _kelas(title, image) {
