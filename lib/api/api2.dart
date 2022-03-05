@@ -11,7 +11,7 @@ class Api2 {
   }
 
   Future<String?> getUserNim() async {
-    // return box.read(CACHE_USER_NIM);
-    return "1515015221";
+    return box.read(CACHE_USER_NIM);
+    // return "1515015221";
   }
 }

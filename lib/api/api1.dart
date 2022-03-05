@@ -4,8 +4,8 @@ import 'package:molsmobile/api/api2.dart';
 
 class Api1 {
   // String url = "http://45.13.132.218:3000";
-  String url = "http://192.168.1.3:3000";
-  String idDefault = "1515015221";
+  String url = "https://mols.gaoanon.com";
+  // String idDefault = "1515015221";
 
   Future<dynamic> login({
     required String userid,
@@ -145,12 +145,13 @@ class Api1 {
       'content-Type': 'application/json',
     };
     print('headers = ' + headers.toString());
-    print('url = $url/post/alltugas');
     var nim = await Api2().getUserNim();
     http.Response r =
         await http.get(Uri.parse('$url/post/alltugas/$nim'), headers: {
       'content-Type': 'application/json',
     });
+    print('url = $url/post/alltugas/$nim');
+
     print("status codenya " + r.statusCode.toString());
 
     print(r.body);
