@@ -86,19 +86,20 @@ class ControllerMahasiswa extends GetxController {
     required String password,
   }) async {
     return Api1().login(userid: userid, password: password).then((value) {
-      this.userId(value["userId"]);
-      this.nim(value["nim"]);
-      this.name(value["name"]);
-      this.generation(value["generation"]);
-      this.phone(value["phone"]);
-      this.email(value["email"]);
-      this.ipk(value["ipk"]);
-      this.academicYear(value["academicYear"]);
-      this.nameDepartment(value["nameDepartment"]);
-      this.degree(value["degree"]);
-      this.nameFaculty(value["nameFaculty"]);
+      this.userId(value["data"]["id"]);
+      this.nim(value["data"]["nim"]);
+      this.name(value["data"]["name"]);
+      this.generation(value["data"]["generation"].toString());
+      this.phone(value["data"]["phone"]);
+      this.email(value["data"]["email"]);
+      this.ipk(value["data"]["ipk"].toString());
+      this.academicYear(value["data"]["academic_year"].toString());
+      this.nameDepartment(value["data"]["departement_name"]);
+      this.degree(value["data"]["degree"]);
+      this.nameFaculty(value["data"]["faculty_name"]);
 
-      Api2().setUserNim(userNim: value["nim"]);
+      Api2().setUserNim(userNim: value["data"]["nim"]);
+      Api2().setTypeUser(type: value["data"]["group"]);
       print("result login: $value");
       update();
     }).catchError((e) => throw (e));

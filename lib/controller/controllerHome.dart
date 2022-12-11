@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:molsmobile/api/api1.dart';
@@ -19,6 +21,54 @@ class PostModel {
     required this.minutes,
     required this.postType,
     required this.idSoal,
+  });
+}
+
+class PostModelDosen {
+  int id;
+  String title;
+  String text;
+  String dateLimit;
+  String minutes;
+  String postType;
+  String schemaPoinId;
+  String idSoal;
+  String idPost;
+  String idGroup;
+  String idConcent;
+
+  PostModelDosen({
+    required this.id,
+    required this.title,
+    required this.text,
+    required this.dateLimit,
+    required this.minutes,
+    required this.postType,
+    required this.schemaPoinId,
+    required this.idSoal,
+    required this.idPost,
+    required this.idGroup,
+    required this.idConcent,
+  });
+}
+
+class JawabanModel {
+  int id;
+  String jawaban;
+  String bobot;
+  String userId;
+  String status;
+  String type;
+  String updatedAt;
+
+  JawabanModel({
+    required this.id,
+    required this.jawaban,
+    required this.bobot,
+    required this.userId,
+    required this.status,
+    required this.type,
+    required this.updatedAt,
   });
 }
 
@@ -97,7 +147,9 @@ class SoalScreenModel {
 
 class ControllerHome extends GetxController {
   RxList<PostModel> listPost = RxList<PostModel>();
+  RxList<PostModelDosen> listPostDosen = RxList<PostModelDosen>();
   RxList<SoalModel> listSoal = RxList<SoalModel>();
+  RxList<JawabanModel> listJawaban = RxList<JawabanModel>();
   RxList<SoalScreenModel> soal = RxList<SoalScreenModel>();
 
   RxString idSoal = "".obs;
@@ -127,6 +179,41 @@ class ControllerHome extends GetxController {
     ));
   }
 
+  setSoalDosen(int indexSoal, contentId) {
+    soal.add(SoalScreenModel(
+      text: listSoal[indexSoal].text,
+      dosenId: listSoal[indexSoal].dosenId,
+      soalType: listSoal[indexSoal].soalType,
+      bobot: listSoal[indexSoal].bobot,
+      kunci: listSoal[indexSoal].kunci,
+      hurufA: listSoal[indexSoal].hurufA,
+      opsiA: listSoal[indexSoal].opsiA,
+      hurufB: listSoal[indexSoal].hurufB,
+      opsiB: listSoal[indexSoal].opsiB,
+      hurufC: listSoal[indexSoal].hurufC,
+      opsiC: listSoal[indexSoal].opsiC,
+      hurufD: listSoal[indexSoal].hurufD,
+      opsiD: listSoal[indexSoal].opsiD,
+      postId: listSoal[indexSoal].postId,
+      soalId: listSoal[indexSoal].soalId,
+    ));
+    return Api1().getJawaban(postContentId: contentId).then((value) {
+      for (var x in value) {
+        this.listJawaban.add(JawabanModel(
+              id: x["id"],
+              jawaban: x["jawaban"].toString(),
+              bobot: x["bobot"].toString(),
+              userId: x["user_id"].toString(),
+              status: x["status"].toString(),
+              type: x["type"].toString(),
+              updatedAt: x["updated_at"].toString(),
+            ));
+      }
+      print("result login: $value");
+      update();
+    }).catchError((e) => throw (e));
+  }
+
   Future<dynamic> getPost() async {
     return Api1().getPost().then((value) {
       // this.title(value["title"]);
@@ -147,6 +234,30 @@ class ControllerHome extends GetxController {
               ));
         }
       }
+      print("result login: $value");
+      update();
+    }).catchError((e) => throw (e));
+  }
+
+  Future<dynamic> getPostDosen() async {
+    return Api1().getPostDosen().then((value) {
+      for (var x in value) {
+        log(value.toString());
+        this.listPostDosen.add(PostModelDosen(
+              id: x["id"],
+              idSoal: x["postcontent"]["soal_id"].toString(),
+              title: x["title"].toString(),
+              text: x["text"].toString(),
+              dateLimit: x["date_limit"].toString(),
+              minutes: x["minutes"].toString(),
+              schemaPoinId: x["schema_poin_id"].toString(),
+              idPost: x["postcontent"]["post_id"].toString(),
+              idGroup: x["group_id"].toString(),
+              idConcent: x["postcontent"]["id"].toString(),
+              postType: x["postType"].toString(),
+            ));
+      }
+
       print("result login: $value");
       update();
     }).catchError((e) => throw (e));

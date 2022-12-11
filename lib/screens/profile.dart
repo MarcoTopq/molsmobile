@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:molsmobile/api/api2.dart';
 import 'package:molsmobile/controller/controllerMahasiswa.dart';
 import 'package:molsmobile/screens/edit_profile.dart';
 import 'package:molsmobile/screens/home.dart';
@@ -18,10 +19,15 @@ class _ProfileState extends State<Profile> {
       Get.find<ControllerMahasiswa>();
 
   double fabHeight = 0;
+  var user = '';
+  _getData() async {
+    user = (await Api2().getTypeUser())!;
+  }
+
   @override
   void initState() {
     super.initState();
-
+    _getData();
     fabHeight = 700;
   }
 
@@ -29,7 +35,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Center(
         child: Container(
-          color: Colors.white,
+      color: Colors.white,
       // margin: EdgeInsets.only(top: 80),
       child: Column(
         children: [

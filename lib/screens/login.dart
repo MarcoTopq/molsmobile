@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:molsmobile/api/api2.dart';
 import 'package:molsmobile/controller/controllerMahasiswa.dart';
 import 'package:molsmobile/main.dart';
 import 'package:molsmobile/screens/loading.dart';
@@ -28,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   var code;
   var isFilled;
   FocusNode? myFocusNode;
-  String _mySelection = '';
+  String _mySelection = 'Mahasiswa';
   List role = ['Dosen', 'Mahasiswa'];
   bool isLoading = false;
   bool validate = false;
@@ -47,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   _login() async {
     _onLoading();
     try {
+      await Api2().setUserNim(userNim: _controllerNim.text);
       await controllerMahasiswa
           .login(
               userid: _controllerNim.text, password: _controllerPassword.text)
@@ -101,53 +103,54 @@ class _LoginPageState extends State<LoginPage> {
           // _validateFill();
         },
       ),
-      // Container(
-      //   margin: EdgeInsets.all(20),
-      //   padding: EdgeInsets.symmetric(horizontal: 20),
-      //   decoration: ShapeDecoration(
-      //       color: Colors.grey,
-      //       // color: Colors.blue[900],
-      //       shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.all(
-      //           Radius.circular(10),
-      //         ),
-      //       )),
-      //   child: DropdownButtonFormField<String>(
-      //       focusNode: myFocusNode,
-      //       icon: Icon(Icons.arrow_drop_down_circle),
-      //       iconEnabledColor: Colors.green[900],
-      //       onChanged: (newVal) async {
-      //         // await lurah(newVal.toString());
-      //         setState(() {
-      //           FocusScope.of(context).requestFocus(new FocusNode());
-      //           _mySelection = newVal!;
-      //           // opsis = newVal;
+      Container(
+        margin: EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        decoration: ShapeDecoration(
+            color: Colors.grey.withOpacity(0.5),
+            // color: Colors.blue[900],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            )),
+        child: DropdownButtonFormField<String>(
+            focusNode: myFocusNode,
+            icon: Icon(Icons.arrow_drop_down_circle),
+            iconEnabledColor: Colors.green[900],
+            onChanged: (newVal) async {
+              // await lurah(newVal.toString());
+              await Api2().setTypeUser(type: newVal);
 
-      //           // print(opsis);
-      //           // print('posisi' + posisi.toString());
-      //         });
-      //       },
-      //       isExpanded: true,
-      //       isDense: true,
-      //       // value: _mySelection,
-      //       hint: Container(
-      //           padding: EdgeInsets.only(left: 0), child: Text('Pilih role')),
-      //       items: role?.map((item) {
-      //             return new DropdownMenuItem<String>(
-      //               child: Padding(
-      //                   padding: EdgeInsets.only(left: 40),
-      //                   child: Text(item.toString())),
-      //               value: item.toString(),
-      //             );
-      //           })?.toList() ??
-      //           [],
-      //       // ignore: missing_return
-      //       validator: (value) {
-      //         if (value == null) {
-      //           return 'Harap di pilih';
-      //         }
-      //       }),
-      // ),
+              setState(() {
+                FocusScope.of(context).requestFocus(new FocusNode());
+                _mySelection = newVal!;
+                // opsis = newVal;
+
+                // print(opsis);
+                // print('posisi' + posisi.toString());
+              });
+            },
+            isExpanded: true,
+            isDense: true,
+            // value: _mySelection,
+            hint: Container(
+                padding: EdgeInsets.only(left: 0), child: Text('Pilih role')),
+            items: role.map((item) {
+              return new DropdownMenuItem<String>(
+                child: Padding(
+                    padding: EdgeInsets.only(left: 40),
+                    child: Text(item.toString())),
+                value: item.toString(),
+              );
+            }).toList(),
+            // ignore: missing_return
+            validator: (value) {
+              if (value == null) {
+                return 'Harap di pilih';
+              }
+            }),
+      ),
     ];
   }
 
@@ -203,8 +206,16 @@ class _LoginPageState extends State<LoginPage> {
                 child: AButtonPrimary(
                   label: 'Login',
                   color: Colors.orange,
-                  onTap: () {
-                    _login();
+                  onTap: () async {
+                    if (_mySelection == 'Dosen') {
+                      await Api2().setUserNim(userNim: '198608032019031006');
+                      await Api2().setTypeUser(type: 'Dosen');
+
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => TabHome()));
+                    } else {
+                      _login();
+                    }
                     // _mySelection == 'Dosen'
                     //     ? Navigator.pushReplacement(
                     //         context,

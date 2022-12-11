@@ -84,12 +84,21 @@ class _HomeDosenState extends State<HomeDosen> {
                 // SizedBox(
                 //   height: 60.0,
                 // ),
-                _post('Tugas Kalkulus Dasar', '02-06-2021',
-                    'Kerjakan soal-soal yang terdapat pada file yang terkirim', 'assets/kalkulus.png'),
-                _post('Tugas Algoritma Dasar', '03-06-2021',
-                    'Buatlah sebuah algoritma dengan case bunuh diri','assets/web.jpg'),
-                _post('Kuis Basis Data', '04-06-2021',
-                    'Kerjakan soal-soal yang terdapat pada file yang terkirim','assets/basdat.jpg'),
+                _post(
+                    'Tugas Kalkulus Dasar',
+                    '02-06-2021',
+                    'Kerjakan soal-soal yang terdapat pada file yang terkirim',
+                    'assets/kalkulus.png'),
+                _post(
+                    'Tugas Algoritma Dasar',
+                    '03-06-2021',
+                    'Buatlah sebuah algoritma dengan case bunuh diri',
+                    'assets/web.jpg'),
+                _post(
+                    'Kuis Basis Data',
+                    '04-06-2021',
+                    'Kerjakan soal-soal yang terdapat pada file yang terkirim',
+                    'assets/basdat.jpg'),
 
                 SizedBox(
                   height: 230.0,
@@ -233,6 +242,8 @@ class _HomeDosenState extends State<HomeDosen> {
                                   time: time,
                                   content: content,
                                   image: image,
+                                  idContent: '',
+                                  id: '',
                                 )));
                   },
                   child: Text('Detail')),

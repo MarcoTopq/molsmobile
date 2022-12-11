@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:molsmobile/api/api2.dart';
 import 'package:molsmobile/controller/controllerHome.dart';
 import 'package:molsmobile/screens/detail_post.dart';
+import 'package:molsmobile/screens/dosen/detail_post_dosen.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 // void main() async {
@@ -36,18 +38,23 @@ class _HomePageState extends State<HomePage> {
   double _panelHeightOpen = 0;
   double _panelHeightClosed = 95.0;
   var menu;
-
-  _getData() {
+  var user = '';
+  _getData() async {
+    user = (await Api2().getTypeUser())!;
     if (controllerHome.listPost.length < 1) {
-      controllerHome.getPost();
+      // if (user == 'MHS') {
+        await controllerHome.getPost();
+      // } else {
+      //   await controllerHome.getPostDosen();
+      // }
     }
   }
 
   @override
   void initState() {
     menu = 1;
-    super.initState();
     _getData();
+    super.initState();
     _fabHeight = 700;
   }
 
@@ -71,7 +78,9 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
               child: ListView(
-            children: [listPost(context)],
+            children: [
+              user == "MHS" ? listPost(context) : listPostDosen(context)
+            ],
           )),
         ],
       ),
@@ -82,7 +91,15 @@ class _HomePageState extends State<HomePage> {
     return Obx(() => Column(
         children: controllerHome.listPost
             .map((e) => _post(
-                e.title, e.minutes, e.text, 'assets/basdat.jpg', e.idSoal))
+                e.title, e.minutes, e.text, 'assets/basdat.jpg', e.idSoal, ''))
+            .toList()));
+  }
+
+  Widget listPostDosen(BuildContext context) {
+    return Obx(() => Column(
+        children: controllerHome.listPostDosen
+            .map((e) => _post(e.title, e.minutes, e.text, 'assets/basdat.jpg',
+                e.id, e.idConcent))
             .toList()));
   }
 
@@ -155,7 +172,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _post(title, time, content, image, id) {
+  Widget _post(title, time, content, image, id, idcontent) {
     return Container(
       padding: EdgeInsets.all(20),
       margin: EdgeInsets.all(20),
@@ -211,16 +228,28 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(primary: Colors.yellow),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailPost(
-                                title: title,
-                                time: time,
-                                content: content,
-                                image: image,
-                                id: id,
-                              )));
+                  user == "MHS"
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailPost(
+                                    title: title,
+                                    time: time,
+                                    content: content,
+                                    image: image,
+                                    id: id,
+                                  )))
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailPostDosen(
+                                    title: title,
+                                    time: time,
+                                    content: content,
+                                    image: image,
+                                    id: id.toString(),
+                                    idContent: idcontent.toString(),
+                                  )));
                 },
                 child: Text('Detail')),
           ],

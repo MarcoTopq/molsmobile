@@ -1,18 +1,21 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:molsmobile/api/api2.dart';
 
 class Api1 {
-  // String url = "http://45.13.132.218:3000";
-  String url = "https://mols.gaoanon.com";
+  // String url = "http://192.168.1.2:3000";
+  String url = "https://mols.dawnesiaofficial.com";
   // String idDefault = "1515015221";
 
   Future<dynamic> login({
     required String userid,
     required String password,
   }) async {
-    final payload = {
-      "userid": userid,
+    final payload = {"username": "unmul.mols", "password": "XySG6SUgbj"};
+
+    final payload2 = {
+      "username": userid,
       "password": password,
       "usertype": "MHS",
     };
@@ -20,16 +23,32 @@ class Api1 {
     print('payload login');
     print("cek payload : " + payload.toString());
 
-    Uri url = Uri.parse("https://apitelkomsel.unmul.ac.id/member/login");
+    Uri url = Uri.parse("https://osm.unmul.ac.id/auth");
     var r = await http.post(url,
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "qg7pepHxEarJZ9OqYLqqUZWsuUX8iKnf"
+        },
         body: jsonEncode(payload),
         encoding: Encoding.getByName("utf-8"));
     var data = jsonDecode(r.body);
     print(data);
+    print(data["data"]["token"]);
+
+    Uri url2 = Uri.parse("https://osm.unmul.ac.id/login");
+    var r2 = await http.post(url2,
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "qg7pepHxEarJZ9OqYLqqUZWsuUX8iKnf",
+          "Authorization": "Bearer " + data["data"]["token"]
+        },
+        body: jsonEncode(payload2),
+        encoding: Encoding.getByName("utf-8"));
+    var data2 = jsonDecode(r2.body);
+    print(data2);
 
     // print("cek response : " + r.toString());
-    return data;
+    return data2;
   }
 
   Future<dynamic> getMahasiswa() async {
@@ -146,6 +165,9 @@ class Api1 {
     };
     print('headers = ' + headers.toString());
     var nim = await Api2().getUserNim();
+    var typeuser = await Api2().getTypeUser();
+    log("nimnya : "+ nim.toString());
+    log("typeuser : "+ typeuser.toString());
     http.Response r =
         await http.get(Uri.parse('$url/post/alltugas/$nim'), headers: {
       'content-Type': 'application/json',
@@ -157,6 +179,48 @@ class Api1 {
     print(r.body);
     var data = json.decode(r.body);
     print(data);
+    return data;
+  }
+
+  Future<dynamic> getPostDosen() async {
+    Map<String, String> headers = {
+      'content-Type': 'application/json',
+    };
+    print('headers = ' + headers.toString());
+    var nim = await Api2().getUserNim();
+    http.Response r =
+        await http.get(Uri.parse('$url/post/alltugasbyuser/$nim'), headers: {
+      'content-Type': 'application/json',
+    });
+    print('url = $url/post/alltugasbyuser/$nim');
+
+    print("status codenya " + r.statusCode.toString());
+
+    print(r.body);
+    var data = json.decode(r.body);
+    print(data);
+    return data;
+  }
+
+  Future<dynamic> getJawaban({
+    required String postContentId,
+  }) async {
+    final payload = {
+      "post_content_id": postContentId,
+    };
+
+    print('payload login');
+    print("cek payload : " + payload.toString());
+
+    Uri urls = Uri.parse('$url/jawabanmahasiswa/findbycontent');
+    var r = await http.post(urls,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(payload),
+        encoding: Encoding.getByName("utf-8"));
+    var data = jsonDecode(r.body);
+    print(data);
+
+    // print("cek response : " + r.toString());
     return data;
   }
 
