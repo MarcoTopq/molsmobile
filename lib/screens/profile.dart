@@ -22,6 +22,13 @@ class _ProfileState extends State<Profile> {
   var user = '';
   _getData() async {
     user = (await Api2().getTypeUser())!;
+    if (user != 'MHS') {
+      controllerMahasiswa.nim.value = '198608032019031006';
+      controllerMahasiswa.name.value = 'BUDI PEKERTI';
+      controllerMahasiswa.phone.value = '08232423232';
+      controllerMahasiswa.email.value = 'dosenTI@unmul.ac.id';
+      controllerMahasiswa.academicYear.value = '';
+    }
   }
 
   @override

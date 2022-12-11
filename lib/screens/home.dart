@@ -42,11 +42,11 @@ class _HomePageState extends State<HomePage> {
   _getData() async {
     user = (await Api2().getTypeUser())!;
     if (controllerHome.listPost.length < 1) {
-      // if (user == 'MHS') {
+      if (user == 'MHS') {
         await controllerHome.getPost();
-      // } else {
-      //   await controllerHome.getPostDosen();
-      // }
+      } else {
+        await controllerHome.getPostDosen();
+      }
     }
   }
 
