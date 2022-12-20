@@ -214,6 +214,8 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => TabHome()));
                     } else {
+                      await Api2().setTypeUser(type: 'MHS');
+
                       _login();
                     }
                     // _mySelection == 'Dosen'

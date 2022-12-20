@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:molsmobile/api/api2.dart';
@@ -39,15 +41,27 @@ class _HomePageState extends State<HomePage> {
   double _panelHeightClosed = 95.0;
   var menu;
   var user = '';
-  _getData() async {
+  _getUser() async {
     user = (await Api2().getTypeUser())!;
-    if (controllerHome.listPost.length < 1) {
-      if (user == 'MHS') {
-        await controllerHome.getPost();
-      } else {
-        await controllerHome.getPostDosen();
-      }
+
+    controllerHome.listPost.clear();
+    controllerHome.listPostDosen.clear();
+  }
+
+  _getData() async {
+    setState(() {
+      _getUser();
+    });
+    await new Future.delayed(const Duration(seconds: 3));
+
+    if (user == 'MHS') {
+      log('get data mahasiswa');
+      await controllerHome.getPost();
+    } else {
+      log('get data dosen');
+      await controllerHome.getPostDosen();
     }
+    setState(() {});
   }
 
   @override
@@ -89,18 +103,26 @@ class _HomePageState extends State<HomePage> {
 
   Widget listPost(BuildContext context) {
     return Obx(() => Column(
-        children: controllerHome.listPost
-            .map((e) => _post(
-                e.title, e.minutes, e.text, 'assets/basdat.jpg', e.idSoal, ''))
-            .toList()));
+          children: [
+            Column(
+                children: controllerHome.listPost
+                    .map((e) => _post(e.title, e.minutes, e.text,
+                        'assets/basdat.jpg', e.idSoal, ''))
+                    .toList()),
+          ],
+        ));
   }
 
   Widget listPostDosen(BuildContext context) {
     return Obx(() => Column(
-        children: controllerHome.listPostDosen
-            .map((e) => _post(e.title, e.minutes, e.text, 'assets/basdat.jpg',
-                e.id, e.idConcent))
-            .toList()));
+          children: [
+            Column(
+                children: controllerHome.listPostDosen
+                    .map((e) => _post(e.title, e.minutes, e.text,
+                        'assets/basdat.jpg', e.id, e.idConcent))
+                    .toList()),
+          ],
+        ));
   }
 
   Widget _panel(ScrollController sc) {
